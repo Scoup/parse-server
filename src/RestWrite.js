@@ -287,6 +287,11 @@ RestWrite.prototype.handleAuthData = function(authData) {
       // Login with auth data
       // Short circuit
       delete results[0].password;
+      // remove anonymous response when user is tring to login with other provider
+      if(results[0].authData && 'anonymous' in results[0].authData
+        && Object.keys(results[0].authData).length > 1) {
+        delete results[0].authData.anonymous;
+      }
       // need to set the objectId first otherwise location has trailing undefined
       this.data.objectId = results[0].objectId;
       this.response = {
